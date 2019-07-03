@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+
+  redmine:
+    image: redmine
+    restart: always
+    depends_on:
+      - redminedb
+    networks:
+      - redminenetwork
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '50M'
+    volumes:
+      - /home/rodrigues/Documents/redmine/files:/usr/src/redmine/files
+    environment:
+      REDMINE_DB_DATABASE: redminedb
+      REDMINE_DB_MYSQL: redminedb
+      REDMINE_DB_USER: root
+      REDMINE_DB_PASSWORD: redminedb2!
+
+  redminedb:
+    image: mysql:5.7
+    restart: always
+    networks:
+      - redminenetwork
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: '50M'
+    volumes:
+      - /home/rodrigues/Documents/redmine/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: redminedb2!
+      MYSQL_DATABASE: redminedb
+
+networks:
+   redminenetwork:
+
+
+
+
